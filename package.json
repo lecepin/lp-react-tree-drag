@@ -1,7 +1,6 @@
 {
   "name": "lp-react-tree-drag",
   "version": "0.1.0",
-  "private": true,
   "author": "lecepin <leping086@vip.qq.com>",
   "source": "src/Tree.jsx",
   "main": "src/Tree.js",
