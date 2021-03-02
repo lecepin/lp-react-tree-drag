@@ -118,7 +118,8 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
-
 ```
 
 ![](https://img.alicdn.com/imgextra/i3/O1CN013GCVrb1STAcfOlpwV_!!6000000002247-1-tps-670-358.gif)
+
+[预览](https://lecepin.github.io/lp-react-tree-drag/)
