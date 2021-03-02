@@ -4,6 +4,7 @@
   "author": "lecepin <leping086@vip.qq.com>",
   "source": "src/Tree.jsx",
   "main": "src/Tree.js",
+  "homepage": "./",
   "exports": "dist/App.modern.js",
   "module": "dist/App.modern.js",
   "repository": "lecepin/lp-react-tree-drag",
