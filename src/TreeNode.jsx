@@ -39,7 +39,10 @@ export default class TreeNode extends React.Component {
     }
 
     return (
-      <div className="lp-react-tree-drag-TreeNode-title">
+      <div
+        className="lp-react-tree-drag-TreeNode-title"
+        data-__lp_tree_node_id={this.props.id}
+      >
         {this.props.renderTitle
           ? this.props.renderTitle(this.props.title, this.props)
           : this.props.title}
@@ -49,7 +52,10 @@ export default class TreeNode extends React.Component {
 
   renderOp() {
     return (
-      <div className="lp-react-tree-drag-TreeNode-op">
+      <div
+        className="lp-react-tree-drag-TreeNode-op"
+        data-__lp_tree_node_id={this.props.id}
+      >
         {this.props.renderOp ? this.props.renderOp(this.props) : null}
       </div>
     );
@@ -70,11 +76,12 @@ export default class TreeNode extends React.Component {
           this.props.onTreeNodeDragEnd && this.props.onTreeNodeDragEnd(e);
         }}
         onDragOver={(e) => e.preventDefault()}
+        data-__lp_tree_node_id={this.props.id}
       >
         <div
           className="lp-react-tree-drag-TreeNode-left"
           draggable
-          data-__lp_tree_node_id={this.props.__lp_tree_node_id}
+          data-__lp_tree_node_id={this.props.id}
         >
           {this.renderIcon()}
           {this.renderTitle()}

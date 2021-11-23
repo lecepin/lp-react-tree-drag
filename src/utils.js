@@ -17,7 +17,7 @@ export function addObjecKey(obj, key, value) {
 export function getNodeById(data, id) {
   for (let i = 0; i < data.length; i++) {
     let item = data[i];
-    if (item.__lp_tree_node_id == id) {
+    if (item.id == id) {
       return item;
     }
 
@@ -33,7 +33,7 @@ export function getNodeById(data, id) {
 export function getNodeByIdAndDel(data, id) {
   for (let i = 0; i < data.length; i++) {
     let item = data[i];
-    if (item.__lp_tree_node_id == id) {
+    if (item.id == id) {
       data.splice(i, 1);
       return item;
     }
@@ -50,7 +50,7 @@ export function getNodeByIdAndDel(data, id) {
 export function getNodeByIdAndMarkNext(data, id) {
   for (let i = 0; i < data.length; i++) {
     let item = data[i];
-    if (item.__lp_tree_node_id == id) {
+    if (item.id == id) {
       data[i] = "next";
       return item;
     }
@@ -71,7 +71,7 @@ export function setNodeByIdAndInsert(data, id, value, type) {
 
   for (let i = 0; i < data.length; i++) {
     let item = data[i];
-    if (item.__lp_tree_node_id == id) {
+    if (item.id == id) {
       if (type == "insertBefore") {
         data.splice(i, 0, value);
       } else if (type == "appendAfter") {

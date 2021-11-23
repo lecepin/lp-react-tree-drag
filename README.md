@@ -15,11 +15,15 @@ npm i -S lp-react-tree-drag
 | expandedAll | Boolean           | false  | 默认是否展开节点 |
 | showLine    | Boolean           | false  | 是否显示组连线   |
 | Data        | `Array<TreeData>` | []     | 树信息           |
+| onHover        | fun | []     |            |
+| onChange        | fun | []     |            |
+| onSelect        | fun | []     |            |
 
 #### `TreeData`
 
 | 属性        | 类型                             | 默认值 | 备注             |
 | ----------- | -------------------------------- | ------ | ---------------- |
+| id       | String|Number                           |        |                  |
 | title       | String                           |        |                  |
 | type        | `emun {'page', 'group', 'link'}` |        |                  |
 | children    | `Array<TreeData>`                |        |                  |

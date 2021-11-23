@@ -72,12 +72,13 @@ export default class TreeGroup extends React.Component {
               node.type == "group" ? (
                 <TreeGroup
                   {...node}
+                  item={node}
                   expanded={expandedAll ? true : node.expanded}
                   expandedAll={expandedAll}
                   showLine={showLine}
                 />
               ) : (
-                <TreeNode {...node} />
+                <TreeNode {...node} item={node} />
               )
             )}
           </div>

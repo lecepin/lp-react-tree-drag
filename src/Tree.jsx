@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDom from "react-dom";
-import { get, uniqueId, cloneDeep } from "lodash";
+import { cloneDeep } from "lodash";
 
 import TreeGroup from "./TreeGroup.jsx";
 import TreeNode from "./TreeNode.jsx";
@@ -13,6 +13,9 @@ export default class Tree extends React.Component {
     expandedAll: false,
     showLine: false,
     key: Date.now(),
+    onHover: () => null,
+    onChange: () => null,
+    onClick: () => null,
   };
 
   constructor(props) {
@@ -22,21 +25,70 @@ export default class Tree extends React.Component {
       expandedAll: false,
       showLine: false,
     };
-    this.dragEnterIndex = this.dragEnterDOM = this.dragPlaceholderIndex = this.refDragPlaceholder = this.data = null;
+    this.dragEnterIndex =
+      this.dragEnterDOM =
+      this.dragPlaceholderIndex =
+      this.refDragPlaceholder =
+      this.data =
+      this.hoverItem =
+      this.isDraging =
+        null;
   }
 
   componentDidMount() {
     this.setState({
-      data: this.props.data.map((item) =>
-        addObjecKey(item, "__lp_tree_node_id", uniqueId)
-      ),
+      data: this.props.data,
       expandedAll: this.props.expandedAll,
       showLine: this.props.showLine,
     });
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.data != this.props.data) {
+      this.setState({ data: nextProps.data });
+    }
+  }
+
+  onHover({ target }) {
+    if (this.isDraging) {
+      return;
+    }
+    const { data } = this.state;
+    const id = target?.dataset["__lp_tree_node_id"];
+    if (this.hoverItem == id) {
+      return;
+    }
+
+    this.hoverItem = id;
+
+    for (let index = 0; index < data?.length; index++) {
+      const item = data[index];
+
+      if (item.id == id) {
+        this.props?.onHover(item);
+        return;
+      }
+    }
+
+    this.props?.onHover({});
+  }
+
+  onClick({ target }) {
+    const { data } = this.state;
+    const id = target?.dataset["__lp_tree_node_id"];
+    for (let index = 0; index < data?.length; index++) {
+      const item = data[index];
+
+      if (item.id == id) {
+        this.props?.onClick(item);
+        return;
+      }
+    }
+  }
+
   render() {
     const { data, expandedAll, showLine, key } = this.state;
+    const { onChange } = this.props;
 
     return (
       <div
@@ -55,10 +107,8 @@ export default class Tree extends React.Component {
               : this.dragEnterDOM.parentElement;
 
           // 接收元素的实际位置
-          const {
-            top: enterElTop,
-            height: enterElHeight,
-          } = this.dragEnterDOM.getBoundingClientRect();
+          const { top: enterElTop, height: enterElHeight } =
+            this.dragEnterDOM.getBoundingClientRect();
 
           // 如果是group的底部，是否在边界区域
           if (
@@ -142,6 +192,7 @@ export default class Tree extends React.Component {
         onDragStart={(e) => {
           this.dragPlaceholderIndex = e.target.dataset.__lp_tree_node_id;
           this.data = cloneDeep(data);
+          this.isDraging = true;
         }}
         onDragEnd={(e) => {
           this.dragEnterDOM = null;
@@ -150,6 +201,8 @@ export default class Tree extends React.Component {
             data: this.data,
             key: Date.now(),
           });
+          onChange?.(this.data);
+          setTimeout(() => (this.isDraging = false), 100);
         }}
         onDragEnter={(e) => {
           // 是否是可接收的节点
@@ -193,17 +246,21 @@ export default class Tree extends React.Component {
           }
         }}
         onDragOver={(e) => e.preventDefault()}
+        onMouseOver={(e) => this.onHover(e)}
+        onMouseLeave={(e) => this.onHover({})}
+        onClick={(e) => this.onClick(e)}
       >
         {(data || []).map((node) =>
           node.type == "group" ? (
             <TreeGroup
               {...node}
+              item={node}
               expanded={expandedAll ? true : node.expanded}
               expandedAll={expandedAll}
               showLine={showLine}
             />
           ) : (
-            <TreeNode {...node} />
+            <TreeNode {...node} item={node} />
           )
         )}
         <div
